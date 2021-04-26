@@ -13,18 +13,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 public class IndexController {
 
-    private final RecipeService recipeService;
+    RecipeService recipeService;
 
     public IndexController(RecipeService recipeService) {
         this.recipeService = recipeService;
     }
 
     @RequestMapping({"", "/", "/index"})
-    public String getIndexPage(Model model) {
-        log.debug("Getting Index page");
-
+    public String getIndexPage(Model model){
+        log.debug(">>>>>>>>> Getting index page");
         model.addAttribute("recipes", recipeService.getRecipes());
-
         return "index";
+
     }
 }

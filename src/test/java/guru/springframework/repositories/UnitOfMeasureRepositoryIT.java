@@ -13,7 +13,7 @@ import java.util.Optional;
 import static org.junit.Assert.assertEquals;
 
 /**
- * Created by jt on 6/17/17.
+ * Created by: p_sha on: Wed 31 Mar 2021
  */
 @RunWith(SpringRunner.class)
 @DataJpaTest
@@ -24,22 +24,12 @@ public class UnitOfMeasureRepositoryIT {
 
     @Before
     public void setUp() throws Exception {
+
     }
 
     @Test
-    public void findByDescription() throws Exception {
-
-        Optional<UnitOfMeasure> uomOptional = unitOfMeasureRepository.findByDescription("Teaspoon");
-
-        assertEquals("Teaspoon", uomOptional.get().getDescription());
+    public void findByDescription() {
+        Optional<UnitOfMeasure> unitOfMeasureOptional = unitOfMeasureRepository.findByDescription("Teaspoon");
+        assertEquals("Teaspoon", unitOfMeasureOptional.get().getDescription());
     }
-
-    @Test
-    public void findByDescriptionCup() throws Exception {
-
-        Optional<UnitOfMeasure> uomOptional = unitOfMeasureRepository.findByDescription("Cup");
-
-        assertEquals("Cup", uomOptional.get().getDescription());
-    }
-
 }
