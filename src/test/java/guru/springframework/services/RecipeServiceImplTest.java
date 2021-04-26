@@ -1,5 +1,8 @@
 package guru.springframework.services;
 
+
+import guru.springframework.converters.RecipeCommandToRecipe;
+import guru.springframework.converters.RecipeToRecipeCommand;
 import guru.springframework.domain.Recipe;
 import guru.springframework.repositories.RecipeRepository;
 import org.junit.Before;
@@ -16,7 +19,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.mockito.Mockito.*;
 
 /**
- * Created by: p_sha on: Wed 31 Mar 2021
+ * Created by jt on 6/17/17.
  */
 public class RecipeServiceImplTest {
 
@@ -25,10 +28,17 @@ public class RecipeServiceImplTest {
     @Mock
     RecipeRepository recipeRepository;
 
+    @Mock
+    RecipeToRecipeCommand recipeToRecipeCommand;
+
+    @Mock
+    RecipeCommandToRecipe recipeCommandToRecipe;
+
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
-        recipeService = new RecipeServiceImpl(recipeRepository);
+
+        recipeService = new RecipeServiceImpl(recipeRepository, recipeCommandToRecipe, recipeToRecipeCommand);
     }
 
     @Test
@@ -40,26 +50,26 @@ public class RecipeServiceImplTest {
         when(recipeRepository.findById(anyLong())).thenReturn(recipeOptional);
 
         Recipe recipeReturned = recipeService.findById(1L);
+
         assertNotNull("Null recipe returned", recipeReturned);
         verify(recipeRepository, times(1)).findById(anyLong());
         verify(recipeRepository, never()).findAll();
     }
 
     @Test
-    public void getRecipes() {
+    public void getRecipesTest() throws Exception {
+
         Recipe recipe = new Recipe();
-        HashSet recipeData = new HashSet();
-        recipeData.add(recipe);
+        HashSet receipesData = new HashSet();
+        receipesData.add(recipe);
 
-        // Mock a call to the method and return recipe Data
-        when(recipeRepository.findAll()).thenReturn(recipeData);
+        when(recipeService.getRecipes()).thenReturn(receipesData);
 
-        Set<Recipe> recipeSet = recipeService.getRecipes();
+        Set<Recipe> recipes = recipeService.getRecipes();
 
-        assertEquals(recipeSet.size(), 1);
-
-        // Verify that the recipeRepository findAll method was called 1 time
+        assertEquals(recipes.size(), 1);
         verify(recipeRepository, times(1)).findAll();
-
+        verify(recipeRepository, never()).findById(anyLong());
     }
+
 }
